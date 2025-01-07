@@ -3,7 +3,8 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:5500',
+  baseURL: 'https://four-viewmystartup-team1-be-ztmf.onrender.com',
+  // baseURL: 'http://localhost:5500',
 });
 
 export default instance;
