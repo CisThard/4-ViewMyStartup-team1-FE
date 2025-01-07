@@ -7,7 +7,7 @@ import Dropdown from '../components/Dropdown';
 import { useEffect, useState } from 'react';
 import Pagination from '../components/Pagination';
 import InvestmentList from '../components/InvestmentList';
-import { fetchInvestments } from '../apis/getCompanies_ksh';
+import { getCompanies } from '../apis/getCompanies_ksh';
 import { postInvestment } from '../apis/postInvestment_ksh';
 import CompanyInvestmentModal from '../components/CompanyInvestmentModal';
 import InvestmentDeleteModal from '../components/InvestmentDeleteModal';
@@ -32,7 +32,9 @@ function InvestmentStatusPage() {
   const openModal = () => {
     setModalVisible(true);
   }
-  const closeModal = () => setModalVisible(false);
+  const closeModal = () => {
+    setModalVisible(false);
+  }
 
   const openDeleteModal = () => {
     setDeleteModalVisible(true);
@@ -40,22 +42,6 @@ function InvestmentStatusPage() {
   const closeDeleteModal = () => {
     setDeleteModalVisible(false);
   };
-
-  const updateInvestment = (key, value) => {
-    setInvestment({
-      ...investment,
-      [key]: value,
-    });
-  };
-
-  useEffect(() => {
-    console.log('Modal visibility changed:', modalVisible);
-  }, [modalVisible]);
-  
-
-  // postInvestment 
-  
-  // 모달 
 
   const [selectedOption, setSelectedOption] = useState(
     'View My Startup 투자 금액 높은순',
@@ -80,7 +66,7 @@ function InvestmentStatusPage() {
     setCurrentPage(value);
   };
 
-  const getInvestmentData = async () => {
+  const getCompanyData = async () => {
     try {
       const skip = (currentPage - 1) * itemsPerPage;
 
@@ -101,7 +87,7 @@ function InvestmentStatusPage() {
 
       const orderBy = mapping[selectedOption]?.orderBy;
 
-      const result = await fetchInvestments({
+      const result = await getCompanies({
         skip: skip,
         limit: itemsPerPage,
         orderBy: orderBy,
@@ -115,45 +101,43 @@ function InvestmentStatusPage() {
   };
 
   useEffect(() => {
-    getInvestmentData();
+    getCompanyData();
   }, [currentPage, itemsPerPage, selectedOption]);
 
   return (
     <div className="investment-status-page">
       <Header />
       <Container>
-          <button className="delete-button" onClick={openDeleteModal}>삭제 모달 열기</button>
-          { deleteModalVisible && <div
-    className={`ksh-investment-delete-modal-overlay ${deleteModalVisible ? 'active' : ''}`}
-    onClick={closeDeleteModal}
-  >
-      <InvestmentDeleteModal
-        investment={investment}
-        password={investment.password}
-        onDelete={closeDeleteModal}
-      />
-        </div> }
-    
-          <button className="investment-button" onClick={openModal}>모달 열기</button>
-          { modalVisible && <div
-    className={`ksh-investment-modal-overlay ${modalVisible ? 'active' : ''}`}
-    onClick={closeModal}
-  >
-      <CompanyInvestmentModal
-        company={selectedCompany}
-        investment={investment}
-        onClose={closeModal}
-        onUpdateInvestment={updateInvestment}
-      />
-        </div> }
-          <div className="investment-status">
-            <p>투자 현황</p>
-            <Dropdown
-              options={sortOptions}
-              selectedValue={selectedOption}
-              onChange={handleDropdownChange}
-            />
-          </div>
+        <button className="delete-button" onClick={openDeleteModal}>삭제 모달 열기</button>
+        {deleteModalVisible && <div
+          className={`ksh-investment-delete-modal-overlay ${deleteModalVisible ? 'active' : ''}`}
+          onClick={closeDeleteModal}
+        >
+          <InvestmentDeleteModal
+            investment={investment}
+            password={investment.password}
+            onClose={closeDeleteModal}
+          />
+        </div>}
+        <button className="investment-button" onClick={openModal}>모달 열기</button>
+        {modalVisible && <div
+          className={`ksh-investment-modal-overlay ${modalVisible ? 'active' : ''}`}
+          onClick={closeModal}
+        >
+          <CompanyInvestmentModal
+            company={selectedCompany}
+            investment={investment}
+            onClose={closeModal}
+          />
+        </div>}
+        <div className="investment-status">
+          <p>투자 현황</p>
+          <Dropdown
+            options={sortOptions}
+            selectedValue={selectedOption}
+            onChange={handleDropdownChange}
+          />
+        </div>
         <div className="investment-status-table">
           <div className="investment-status-rank">순위</div>
           <div className="investment-status-company-name">기업명</div>
