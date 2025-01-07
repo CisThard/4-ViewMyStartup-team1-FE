@@ -11,7 +11,7 @@ import axios from 'axios';
  * @returns {Promise<Object>} - 기업 전체 데이터
  */
 
-export const fetchInvestments = async ({
+export const getCompanies = async ({
   skip = 0,
   limit = 10,
   searchString = '',

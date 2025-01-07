@@ -1,47 +1,44 @@
-import React from 'react';
 import './InvestmentDeleteModal.css';
 import { useState } from 'react';
 import { deleteInvestment } from '../apis/deleteInvestment_ksh';
+import InvestmentDeleteFailModal from './InvestmentDeleteFailModal';
 
-
-// password는 기존에 저장되어 있는 비밀번호. typedPassword는 사용자가 입력한 비밀번호. 검증하는 부분이 필요함
-const InvestmentDeleteModal = ({ password, onClose, investment }) => {
+const InvestmentDeleteModal = ({ investment, onClose }) => {
     const [investmentPassword, setInvestmentPassword] = useState('');
+    const [isInvestmentDeleted, setIsInvestmentDeleted] = useState(false);
 
     const handleSetPassword = (typedPassword) => {
         setInvestmentPassword(typedPassword);
     };
 
-    const deleteInvestmentData = async () => {
+    const handleModalClose = () => {
+        onClose();
+    };
+
+    const handleDeleteClick = async () => {
         try {
-            await deleteInvestment({
-                id: investment.id,
-                password: investmentPassword,
-            });
-            setIsInvestmentDeleted(true);
-            console.log("삭제 성공");
+            if (!investment || !investment.id || !investmentPassword) {
+                console.log("모든 항목 입력 필요");
+                setIsInvestmentDeleted(true);
+                return;
+            }
+            await deleteInvestment({ id: investment.id, password: investmentPassword });
+            setIsInvestmentDeleted(false);
+            handleModalClose();
         } catch (error) {
-            console.error('Failed to delete investment:', error);
+            setIsInvestmentDeleted(true);
         }
     };
 
-    const [isInvestmentDeleted, setIsInvestmentDeleted] = useState(false);
 
-    const handleDeleteClick = () => {
-        if (!investmentPassword) {
-            alert('비밀번호를 입력해주세요');
-            return;
-        } else if (investmentPassword !== password) {
-            alert('비밀번호가 일치하지 않습니다');
-            return;
-        }
-        deleteInvestmentData();
-    };
+    if (isInvestmentDeleted) {
+        return <InvestmentDeleteFailModal onClose={handleModalClose} />;
+    }
 
     return (
-        <div 
-          className="ksh-investment-delete-modal" 
-          onClick={(e) => e.stopPropagation()}
+        <div
+            className="ksh-investment-delete-modal"
+            onClick={(e) => e.stopPropagation()}
         >
             <div className="ksh-investment-delete-modal-section">
                 <div className="ksh-investment-delete-modal-top-section">
