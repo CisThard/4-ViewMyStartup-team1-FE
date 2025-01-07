@@ -29,7 +29,7 @@ function TitleAndSearch({ keyword, setKeyword }) {
               id="searchInput"
               value={keyword}
               onChange={handleKeywordChange}
-              placeholder="검색어를 입력해주세요"
+              placeholder="기업명을 입력해주세요"
             />
           </form>
         </div>
