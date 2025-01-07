@@ -3,6 +3,8 @@
 import axios from 'axios';
 
 export const deleteInvestment = async ({ id, password }) => {
+  console.log('investment id ', id);
+  console.log('investment password ', password);
   try {
     const response = await axios.delete(
       `http://localhost:5500/api/ksh/investments/${id}`,
