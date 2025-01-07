@@ -43,11 +43,11 @@
 
 .table-row {
   display: flex;
-  border-bottom: 1px solid #4b4b4b;
+  border-top: 1px solid #4b4b4b;
 }
 
-.table-row:last-child {
-  border-bottom: none;
+.table-row:first-child {
+  border-top: none;
 }
 
 .table-row .table-cell {
