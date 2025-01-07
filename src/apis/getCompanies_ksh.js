@@ -1,6 +1,6 @@
 // 김세환
 
-import axios from 'axios';
+import axios from '../lib/axios';
 
 /**
  * 기업 전체 데이터를 가져오는 함수
@@ -18,22 +18,19 @@ export const getCompanies = async ({
   orderBy = 'lowestSimInvestment',
 }) => {
   try {
-    const response = await axios.get(
-      `http://localhost:5500/api/ksh/companies`,
-      {
-        params: {
-          skip,
-          limit,
-          searchString,
-          orderBy,
-        },
+    const response = await axios.get(`/api/ksh/companies`, {
+      params: {
+        skip,
+        limit,
+        searchString,
+        orderBy,
       },
-    );
+    });
     return response.data;
   } catch (error) {
     console.error('Failed to fetch investments:', error);
     throw new Error(
-      error.response?.data?.message || 'Failed to fetch investments',
+      error.response?.data?.message || 'Failed to fetch investments'
     );
   }
 };
