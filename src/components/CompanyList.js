@@ -6,6 +6,7 @@ import setCategoryEngToKor from '../utils/setCategoryEngToKor';
 import convertNumTo100M from '../utils/convertNumTo100M';
 import StartupTableHead from './StartupTableHead';
 import TitleAndSearch from './TitleAndSearch';
+import Pagination from './Pagination';
 
 function CompanyListTableBody({ company, rank }) {
   return (
@@ -28,9 +29,12 @@ function CompanyListTableBody({ company, rank }) {
   );
 }
 
-export default function CompanlistTableRank() {
+export default function CompanyListTableRank() {
   const [companies, setCompanies] = useState([]);
   const [keyword, setKeyword] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sortOption, setSortOption] = useState('revenueDesc'); // 기본 정렬을 매출액 높은 순으로 설정
+  const itemsPerPage = 10;
 
   const handleLoad = async () => {
     const result = await getCompanies();
@@ -45,16 +49,58 @@ export default function CompanlistTableRank() {
     company.name.toLowerCase().includes(keyword.toLowerCase())
   );
 
+  // 정렬 로직
+  const sortedCompanies = [...filteredCompanies].sort((a, b) => {
+    switch (sortOption) {
+      case '누적 투자금액 낮은 순':
+        return a.actualInvest - b.actualInvest;
+      case '누적 투자금액 높은 순':
+        return b.actualInvest - a.actualInvest;
+      case '매출액 낮은 순':
+        return a.revenue - b.revenue;
+      case '매출액 높은 순':
+        return b.revenue - a.revenue;
+      case '고용인원 낮은 순':
+        return a.employeesCount - b.employeesCount;
+      case '고용인원 높은 순':
+        return b.employeesCount - a.employeesCount;
+    }
+  });
+
+  const indexOfLastCompany = currentPage * itemsPerPage;
+  const indexOfFirstCompany = indexOfLastCompany - itemsPerPage;
+  const currentCompanies = sortedCompanies.slice(indexOfFirstCompany, indexOfLastCompany);
+
+  const sortOptions = [
+    { value: '매출액 높은 순', label: '매출액 높은 순' },
+    { value: '매출액 낮은 순', label: '매출액 낮은 순' },
+    { value: '누적 투자금액 높은 순', label: '누적 투자금액 높은 순' },
+    { value: '누적 투자금액 낮은 순', label: '누적 투자금액 낮은 순' },
+    { value: '고용인원 높은 순', label: '고용인원 높은 순' },
+    { value: '고용인원 낮은 순', label: '고용인원 낮은 순' },
+
+  ];
+
   return (
     <div className="startup-list">
       <div className="title-search-dropdown">
         <TitleAndSearch keyword={keyword} setKeyword={setKeyword} />
-        <Dropdown />
+        <Dropdown
+          options={sortOptions.map(option => option.value)}
+          selectedValue={sortOption}
+          onChange={setSortOption}
+        />
       </div>
       <StartupTableHead />
-      {filteredCompanies.map((item, index) => {
-        return <CompanyListTableBody key={item.id} company={item} rank={index + 1} />;
+      {currentCompanies.map((item, index) => {
+        return <CompanyListTableBody key={item.id} company={item} rank={indexOfFirstCompany + index + 1} />;
       })}
+      <Pagination
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+        totalItems={filteredCompanies.length}
+        itemsPerPage={itemsPerPage}
+      />
     </div>
   );
 }
