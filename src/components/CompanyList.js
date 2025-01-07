@@ -30,6 +30,7 @@ function CompanyListTableBody({ company, rank }) {
 
 export default function CompanlistTableRank() {
   const [companies, setCompanies] = useState([]);
+  const [keyword, setKeyword] = useState('');
 
   const handleLoad = async () => {
     const result = await getCompanies();
@@ -40,14 +41,18 @@ export default function CompanlistTableRank() {
     handleLoad();
   }, []);
 
+  const filteredCompanies = companies.filter((company) =>
+    company.name.toLowerCase().includes(keyword.toLowerCase())
+  );
+
   return (
     <div className="startup-list">
-      <div className="titl-search-dropdown">
-        <TitleAndSearch />
+      <div className="title-search-dropdown">
+        <TitleAndSearch keyword={keyword} setKeyword={setKeyword} />
         <Dropdown />
       </div>
       <StartupTableHead />
-      {companies.map((item, index) => {
+      {filteredCompanies.map((item, index) => {
         return <CompanyListTableBody key={item.id} company={item} rank={index + 1} />;
       })}
     </div>

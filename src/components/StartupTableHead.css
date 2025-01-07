@@ -9,7 +9,7 @@
 }
 
 .rankingHeader {
-  width: 68px;
+  width: 6.4rem;
   height: 4rem;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
@@ -19,7 +19,7 @@
 }
 
 .companyname {
-  width: 213px;
+  width: 214.58px;
   height: 4rem;
   display: flex;
   justify-content: center;
@@ -27,7 +27,7 @@
 }
 
 .script {
-  width: 304px;
+  width: 315.56px;
   height: 4rem;
   display: flex;
   justify-content: center;
@@ -35,7 +35,7 @@
 }
 
 .category {
-  width: 153.75px;
+  width: 151.47px;
   height: 4rem;
   display: flex;
   justify-content: center;
@@ -43,7 +43,7 @@
 }
 
 .investment-amount {
-  width: 153.75px;
+  width: 151.47px;
   height: 4rem;
   display: flex;
   justify-content: center;
@@ -51,7 +51,7 @@
 }
 
 .revenue {
-  width: 153.75px;
+  width: 151.47px;
   height: 4rem;
   display: flex;
   justify-content: center;
@@ -59,7 +59,7 @@
 }
 
 .employee {
-  width: 153.75px;
+  width: 151.47px;
   height: 4rem;
   display: flex;
   justify-content: center;

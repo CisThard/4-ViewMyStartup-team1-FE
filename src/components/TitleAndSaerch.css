@@ -27,23 +27,18 @@
   align-items: center;
   padding-left: 1.2rem;
 }
-.Sort {
-  color: white;
-  width: 168px;
-}
 
-.ic-search {
-  position: absolute;
-  top: 1rem;
-  right: 1.2rem;
+.icon-search {
   cursor: pointer;
+  margin-right: 8px;
+  vertical-align: middle;
 }
 #searchInput > img:hover {
   opacity: 0.5;
 }
 
 #searchInput {
-  width: 42.8rem;
+  width: 22.8rem;
   border-color: #131313;
   font-size: 1.4rem;
 }
