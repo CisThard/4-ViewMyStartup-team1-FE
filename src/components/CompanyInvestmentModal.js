@@ -8,11 +8,11 @@ import InvestmentSuccessModal from './InvestmentSuccessModal';
 
 const CompanyInvestmentModal = ({ company, investment, onClose }) => {
 
-    const [investorName, setInvestorName] = useState('');
-    const [investmentAmount, setInvestmentAmount] = useState(0);
-    const [investmentComment, setInvestmentComment] = useState('');
-    const [investmentPassword, setInvestmentPassword] = useState('');
-    const [investmentPasswordConfirm, setInvestmentPasswordConfirm] = useState('');
+    const [investorName, setInvestorName] = useState(' ');
+    const [investmentAmount, setInvestmentAmount] = useState(' ');
+    const [investmentComment, setInvestmentComment] = useState(' ');
+    const [investmentPassword, setInvestmentPassword] = useState(' ');
+    const [investmentPasswordConfirm, setInvestmentPasswordConfirm] = useState(' ');
     const [isInvestmentSuccessful, setIsInvestmentSuccessful] = useState(false);
 
     const handleSetName = (name) => {
